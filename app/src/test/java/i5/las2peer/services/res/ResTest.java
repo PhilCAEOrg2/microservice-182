@@ -129,9 +129,14 @@ public class ResTest {
         
     try {
       c.setLogin(AnonymousAgentImpl.IDENTIFIER, "");
-      ClientResponse result = c.sendRequest("GET", "/t", "", "text/plain", "*/*", new HashMap<>(), new Object[0]);
+      ClientResponse result = c.sendRequest("GET", "/t", """
+""", "text/plain", "*/*", new HashMap<>(), new Object[0]);
       System.out.println("Result of request with id: 616250: " + result.getResponse().trim());
-    
+      Object response = JSONValue.parse(result.getResponse().trim());
+      // Response body has type JSON Object
+      assertThat("[907713]", response, isA(JSONObject.class));
+      
+
     } catch (Exception e) {
       e.printStackTrace();
       fail("Exception: " + e);
